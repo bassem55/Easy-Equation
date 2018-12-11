@@ -98,7 +98,7 @@ function q_equation($equation)
                 
                 //we try res1 and res2 == s_factor to make sure that we choose correct signs in correct position
                 
-               
+              
                 if($res1 == $s_num)
                 {
                     
@@ -259,14 +259,15 @@ function q_equation($equation)
             $q_num1 = $q_arr2[0];
             $q_num2 = $q_arr2[1];
             
-            $m_q_num1 = get_m($q_num1);
-            $m_q_num2 = get_m($q_num2);
-            for($i2 = 0;$i< count($t_arr) ; $i2++)
+           
+            for($i2 = 0;$i2< count($t_arr) ; $i2++)
             {
                 $t_arr2  = $t_arr[$i2];
                 
                 $t_num1 = $t_arr2[0];
                 $t_num2 = $t_arr2[1];
+                
+                
                 
                 $m_t_num1 = get_m($t_num1);
                 $m_t_num2 = get_m($t_num2);
@@ -440,6 +441,18 @@ function multiply($num)
     }
     return $data;
 }
+/*
+$arr = multiply(4);
+for($i=0;$i<count($arr);$i++)
+{
+    $two_num = $arr[$i];
+    $num1 = $two_num[0];
+    $num2 = $two_num[1];
+    
+    echo $num1 . " * " . $num2 . "<br>";
+}
+*/
+    
 function get_m($num)
 {
     //this function used to the nagative value of any value entered ($num)
@@ -464,6 +477,8 @@ function get_nice_equation($equation)
      *
      * the function will return 1x^2+1x-20=0
      */
+    
+    $equation = str_replace(' ' , '' ,$equation);
     
     $first_char = first_char($equation);
     $pos_f_char = strpos($equation,$first_char);
@@ -520,8 +535,210 @@ function get_nice_equation($equation)
                 $new_equation2 .= $new_equation[$i];
         }
     }
+    /*
+     * if the equation written like this x^2-x+3 = 1
+     * we want change the standard to be like this x^2 - x  + 3 -1 = 0  
+     */
     
-    return  $new_equation2;
+    $fourth_factor = fourth_factor($new_equation2);
+    $sign_fourth = sign_fourth_factor($new_equation2);
+    
+    $t_arr = third_factor($new_equation2);
+    $third_factor = $t_arr[0];
+    $pos_third = $t_arr[1];
+    
+    $sign_third = sign_third_factor($new_equation2);
+    
+    if($fourth_factor != 0)
+    {
+        //here we want to know the sign of fourth factor 
+       
+        if($sign_fourth == "+")
+        {
+            //here we want Subtraction the third factor from fourth factor 
+            
+            if($sign_third == "+")
+            {
+                $new_third = $third_factor - $fourth_factor;
+            }
+            else if($sign_third == "-")
+            {
+                $new_third = get_m($third_factor) - $fourth_factor;
+            }
+        }
+        else if($sign_fourth == "-")
+        {
+            //here we want sum the third factor with fourth factor
+            if($sign_third == "+")
+            {
+                
+                $new_third = $third_factor + $fourth_factor;
+            }
+            else
+            {
+                $new_third = get_m($third_factor) + $fourth_factor;
+            }
+        }
+        else
+        {
+            //there no probability to come here
+            return "fuck";
+        }
+        //we want to know the sign of new third factor
+        if($new_third > 0)
+        {
+            //so the sign is +
+            //if sign is + so we will put + sign to equation on the place of old third factor
+            if($pos_third == 0)//so he write the third factor on first
+            {
+                $substr = substr($new_equation2 , ($pos_third + strlen($third_factor) - 1));
+                $new_equation3 = $new_third . $substr;
+            }
+            else
+            {
+                if($sign_third == "+" || $sign_third == "-")
+                {
+                    //so we will just change the number
+                    
+                    
+                    $test_equation = '';
+                    for($i=0;$i<strlen($new_equation2);$i++)
+                    {
+                        if($i == $pos_third -1)
+                        {
+                            $test_equation .=  "+" . $new_third;
+                            $i = $pos_third + strlen($third_factor) -1 ;
+                        }
+                        else
+                        {
+                            $test_equation .= $new_equation2[$i];
+                        }
+                    }
+                    
+                    $new_equation3 = $test_equation;
+                }
+               
+                   
+            }
+        }
+        else
+        {
+            //so the sign of new third -
+            
+            if($pos_third == 0)//so he write the third factor on first
+            {
+                $substr = substr($new_equation2 , ($pos_third + strlen($third_factor) - 1));
+                $new_equation3 = "-" . $new_third . $substr;
+            }
+            else
+            {
+                if($sign_third == "+" || $sign_third == "-")
+                {
+                    //in + and in - we will change it with 
+                    
+                    $test_equation = '';
+                    for($i=0;$i<strlen($new_equation2);$i++)
+                    {
+                        if($i == $pos_third -1)
+                        {
+                            $test_equation .=  $new_third;
+                            $i = $pos_third + strlen($third_factor) -1 ;
+                        }
+                        else
+                        {
+                            $test_equation .= $new_equation2[$i];
+                        }
+                    }
+                    
+                    $new_equation3 = $test_equation;
+                }
+                
+            }
+        }
+    }
+    else if($fourth_factor == 0)
+    {
+        //nothing will change
+        $new_equation3 = $new_equation2;
+    }
+    //we want change the old fourth factor to be zero
+    $arr = explode("=" , $new_equation3);
+    
+    $first_part = $arr[0];
+    
+    $new_equation4 = $first_part . "=0";
+    
+    
+    
+    /*
+     * if the q_factor has nagative sign we will reverse all equation signs 
+     * like this -x^2+4x-12=0
+     * will be like this x^2-4x+12=0
+     */
+    $q = q_factor($new_equation4);
+    $pos_sign_q = $q[1] - 1;
+    
+    
+    $s = s_factor($new_equation4);
+    $pos_sign_s = $s[1] -1;
+    if($pos_sign_s == -1)
+    {
+        $pos_sign_s++;
+    }
+    $sign_s_factor = sign_s_factor($new_equation4); 
+    
+    $t = third_factor($new_equation4);
+    $pos_sign_t = $t[1] -1;
+    if($pos_sign_t == -1)
+    {
+        $pos_sign_t++;
+    }
+    $sign_t_factor = sign_third_factor($new_equation4);
+    
+    $sign_q_factor = sign_q_factor($new_equation4);
+    if($sign_q_factor == "-")
+    {
+        $new_equation5 = '';
+        for($i=0;$i<strlen($new_equation4);$i++)
+        {
+            if($i == $pos_sign_q)
+            {
+                $new_equation5 .= "+";
+            }
+            else if($i == $pos_sign_s)
+            {
+                
+                if($sign_s_factor == "+")
+                    $new_equation5 .= "-";
+                else 
+                    $new_equation5 .= "+";
+                
+                if($pos_sign_s == 0)
+                {
+                      $new_equation5 .= $new_equation4[$i];  
+                }
+            }
+            else if($i == $pos_sign_t)
+            {
+                if($sign_t_factor == "+")
+                    $new_equation5 .= "-";
+                else
+                    $new_equation5 .= "+";
+                
+                if($pos_sign_t == 0)
+                   $new_equation5 .= $new_equation4[$i];
+            }
+            else
+                $new_equation5 .= $new_equation4[$i];
+        }
+    }
+    else
+    {
+        //nothing will be change
+        $new_equation5 = $new_equation4;
+    }
+    
+    return  $new_equation5;
 }
 function q_factor($string)
 {
@@ -691,7 +908,7 @@ function fourth_factor($equation)
     $number = '';
     if(count($arr) == 2)//so the string have = sign
     {
-        $number = $arr[1];
+        $number = first_number($arr[1]);
     }
     else
     {
@@ -780,8 +997,7 @@ function sign_q_factor($equation)
     $pos_sign = $q[1] -1 ;
     
     if($equation[$pos_sign] == '-' || $equation[$pos_sign] == '+')
-        return $string[$pos_char];
-    
+        return $equation[$pos_sign];
     else if(($q[1]) == 0 )//it is meaning that write on first so the sign equal +
         return "+";
     
@@ -816,18 +1032,24 @@ function sign_third_factor($equation)
 function sign_fourth_factor($equation)
 {
     $f_factor = (string)fourth_factor($equation);
-    $pos_sign = strpos($equation , $f_factor) -1;
+    $pos_sign = strpos($equation , "=") + 1;
+    
     
     if($f_factor == "0")
         return "zero";
+    else if(filter_var($equation[$pos_sign] , FILTER_VALIDATE_INT))
+        return "+";
     else if($equation[$pos_sign] == '-' || $equation[$pos_sign] == '+')
         return $equation[$pos_sign];
-        
-    else if(($pos_sign +1) == 0 )//it is meaning that write on first so the sign equal +
-        return "+";
             
     else
        return false;
 }
 
+?>
+<?php 
+if(isset($_POST['equation']))
+{
+    $solutions = q_equation($_POST['equation']);
+}
 ?>
