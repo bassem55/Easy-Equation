@@ -111,7 +111,7 @@ function q_equation($equation)
                                secand_x will be positive of t_num1 and  / q_num2
                                
                      */
-                    $step0 = $equation;
+                    $step0 = $equation . "<br>";
                     $step1 = "( " . $q_num1 . $char ." - " . $t_num1 . " ) " . " ( " . $q_num2 . $char . " + " . $t_num2 . " ) = 0". "<br>";
                     $step2 =  "( " . $q_num1 . $char . " - " . $t_num1 . " ) = 0  ||" . " ( " . $q_num2 . $char . " + " . $t_num1 . " ) = 0". "<br>";
                     
@@ -173,7 +173,7 @@ function q_equation($equation)
                                secand_x will be nagative of t_num1 and  / q_num2
                      
                      */
-                    $step0 = $equation;
+                    $step0 = $equation. "<br>";
                     $step1 = "( " . $q_num1 . $char ." + " . $t_num1 . " ) " . " ( " . $q_num2 . $char . " - " . $t_num2 . " ) = 0" . "<br>";
                     $step2 = "( " . $q_num1 . $char . " + " . $t_num1 . " ) = 0 || ( " . $q_num2 . $char . " - " . $t_num2 . " ) = 0". "<br>";
                     
@@ -286,7 +286,7 @@ function q_equation($equation)
                     // first x will be the positive of t_num2 / q_num1
                     //secand x will be the positive of t_num1 / q_num2
                     
-                    $step0 = $equation;
+                    $step0 = $equation. "<br>";
                     $step1 = "( " .$q_num1 . $char . " - " . $t_num1 . " ) ( " . $q_num2 . $char . " - " . $t_num2 . " ) = 0" . "<br>";
                     $step2 = "( " .$q_num1 . $char . " - " . $t_num1 . " ) = 0 ||  ( " . $q_num2 . $char . " - " . $t_num2 . " ) = 0". "<br>";
                     
@@ -351,7 +351,7 @@ function q_equation($equation)
                     //secand x will be the nagative of t_num1 / q_num2
                     
                     
-                    $step0 = $equation;
+                    $step0 = $equation. "<br>";
                     $step1 = "( " .$q_num1 . $char . " + " . $t_num1 . " ) ( " . $q_num2 . $char . " + " . $t_num2 . " ) = 0" . "<br>";
                     $step2 = "( " .$q_num1 . $char . " + " . $t_num1 . " ) = 0 ||  ( " . $q_num2 . $char . " + " . $t_num2 . " ) = 0". "<br>";
                     
