@@ -19,9 +19,7 @@ function q_equation($equation)
     
     $char = first_char($equation1);
     
-    //echo "q_factor " . $q_factor . " sign of q_factor " .$sign_q_factor."<br>";
-    //echo "s_factor " . $s_factor . " sign of s_factor " .$sign_s_factor."<br>";
-    //echo "third_factor " . $third_factor . " sign of third_factor " .$sign_third_factor."<br>";
+    
     /*
      * equation will be like 3x^2 - 5x + 9 = 0
      * 
@@ -440,19 +438,7 @@ function multiply($num)
         }
     }
     return $data;
-}
-/*
-$arr = multiply(4);
-for($i=0;$i<count($arr);$i++)
-{
-    $two_num = $arr[$i];
-    $num1 = $two_num[0];
-    $num2 = $two_num[1];
-    
-    echo $num1 . " * " . $num2 . "<br>";
-}
-*/
-    
+}    
 function get_m($num)
 {
     //this function used to the nagative value of any value entered ($num)
@@ -1051,5 +1037,6 @@ function sign_fourth_factor($equation)
 if(isset($_POST['equation']))
 {
     $solutions = q_equation($_POST['equation']);
+    echo $solutions;
 }
 ?>
